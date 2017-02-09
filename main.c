@@ -13,16 +13,20 @@
 
 bool valid_psn_id(char *str, size_t name_len){
     if (name_len < 3 || name_len > 16) {
+    	printf("short/long\n");
         return false;
     }
     
     if (!isalpha(str[0])) {
+    	printf("not alpha start\n");
         return false;
     }
     
     for (int i = 0; i < name_len; i++) {
         char currentChar = str[i];
         if (!(isalnum(currentChar) || currentChar == '-' || currentChar == '_')) {
+        	printf("wrong stuff\n");
+        	printf("%i\n", currentChar);
             return false;
         }
     }
@@ -46,14 +50,22 @@ void write_profile(char *name, size_t name_len){
     fclose(myprofile);
 }
 
+int min_int(int a, int b){
+	return a < b ? a : b;
+}
+
 bool prompt(){
     printf("Enter a valid PSN ID: ");
     
-    const int max_len = 16 + 1;
+    // PSN ID max = 16 chars + (\r\n + \0)
+    const int max_len = 16 + 3;
     
     char id_name[max_len];
     fgets(id_name, max_len, stdin);
     size_t id_len = strlen(id_name);
+    int new_line_loc = min_int(strcspn(id_name, "\n"), strcspn(id_name, "\r"));
+    id_name[new_line_loc] = '\0';
+    id_len = new_line_loc;
     
     if (valid_psn_id(id_name, id_len)) {
         write_profile(id_name, id_len);
