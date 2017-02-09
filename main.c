@@ -53,7 +53,7 @@ bool prompt(){
     
     char id_name[max_len];
     fgets(id_name, max_len, stdin);
-    size_t id_len = strlen(id_name) - 1;
+    size_t id_len = strlen(id_name);
     
     if (valid_psn_id(id_name, id_len)) {
         write_profile(id_name, id_len);
@@ -64,8 +64,6 @@ bool prompt(){
 }
 
 int main(int argc, const char * argv[]) {
-    // insert code here...
-    
     while (!prompt()) {
         printf("Invalid PSN ID.\n"
                "Valid PSN IDs must satisfy the following requirements:\n"
